@@ -12,16 +12,10 @@ function Cadastro() {
 
   const [confirmaSenha, setConfirmaSenha] = useState<string>("");
 
-  const [usuario, setUsuario] = useState<Usuario>({
-    id: 0,
-    nome: "",
-    usuario: "",
-    senha: "",
-    foto: "",
-  });
+  const [usuario, setUsuario] = useState<Usuario>({} as Usuario);
 
   useEffect(() => {
-    if (usuario.id !== 0) {
+    if (usuario.id !== undefined) {
       retornar();
     }
   }, [usuario]);
@@ -43,17 +37,13 @@ function Cadastro() {
 
   async function cadastrarNovoUsuario(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { id, ...usuarioParaCadastro } = usuario;
+    // const { id, ...usuarioParaCadastro } = usuario;
 
     if (confirmaSenha === usuario.senha && usuario.senha.length >= 8) {
       setIsLoading(true);
 
       try {
-        await cadastrarUsuario(
-          `/usuarios/cadastrar`,
-          usuarioParaCadastro,
-          setUsuario
-        );
+        await cadastrarUsuario(`/usuarios/cadastrar`, usuario, setUsuario);
         alert("Usuário cadastrado com sucesso!");
       } catch (error) {
         alert("Erro ao cadastrar o usuário!");
