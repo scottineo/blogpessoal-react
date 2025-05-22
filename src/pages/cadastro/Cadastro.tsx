@@ -57,6 +57,7 @@ function Cadastro() {
         alert("Usuário cadastrado com sucesso!");
       } catch (error) {
         alert("Erro ao cadastrar o usuário!");
+        console.error("Detalhes do erro:", error);
       }
     } else {
       alert(
