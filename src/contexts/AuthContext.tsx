@@ -17,14 +17,7 @@ interface AuthProviderProps {
 export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [usuario, setUsuario] = useState<UsuarioLogin>({
-    id: 0,
-    nome: "",
-    usuario: "",
-    senha: "",
-    foto: "",
-    token: "",
-  });
+  const [usuario, setUsuario] = useState<UsuarioLogin>({} as UsuarioLogin);
 
   const [isLoading, setIsLoading] = useState(false);
 
