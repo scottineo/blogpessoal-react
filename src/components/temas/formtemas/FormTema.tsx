@@ -76,7 +76,10 @@ function FormTema() {
         });
         alert("O Tema foi cadastrado com sucesso!");
       } catch (error: any) {
-        if (error.toString().includes("403")) {
+        if (
+          error.toString().includes("403") ||
+          error.toString().includes("401")
+        ) {
           handleLogout();
         } else {
           alert("Erro ao cadastrar o tema.");
