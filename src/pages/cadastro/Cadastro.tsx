@@ -23,12 +23,12 @@ function Cadastro() {
 
   useEffect(() => {
     if (usuario.id == undefined) {
-      retornar();
+      retornar("/login");
     }
   }, [usuario]);
 
-  function retornar() {
-    navigate("/cadastro");
+  function retornar(p0: string) {
+    navigate("/");
   }
 
   function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
@@ -62,6 +62,11 @@ function Cadastro() {
       newErrors.senha = "A senha é obrigatória.";
     } else if (usuario.senha.length < 8) {
       newErrors.senha = "A senha deve ter no mínimo 8 caracteres.";
+    }
+    if (!confirmaSenha.trim()) {
+      newErrors.confirmaSenha = "A confirmação de senha é obrigatória.";
+    } else if (usuario.senha !== confirmaSenha) {
+      newErrors.confirmaSenha = "As senhas não coincidem.";
     }
 
     setErrors(newErrors);
@@ -100,11 +105,6 @@ function Cadastro() {
         console.error("Detalhes do erro (Geral):", error);
       }
       alert(errorMessage);
-      // Optionally, if the error is about a specific field (e.g., email already exists),
-      // you might want to set it in the errors state.
-      // Example: if (error.response?.data?.field === 'usuario') {
-      //   setErrors(prev => ({...prev, usuario: error.response.data.message}));
-      // }
     } finally {
       setIsLoading(false);
     }
@@ -238,7 +238,7 @@ function Cadastro() {
               type="button"
               className="rounded text-white bg-red-400 
                 hover:bg-red-700 w-1/2 py-2"
-              onClick={retornar}
+              onClick={() => retornar("/")}
             >
               Cancelar
             </button>
