@@ -23,7 +23,7 @@ function Cadastro() {
 
   useEffect(() => {
     if (usuario.id == undefined) {
-      retornar("/login");
+      retornar("/cadastro");
     }
   }, [usuario]);
 
