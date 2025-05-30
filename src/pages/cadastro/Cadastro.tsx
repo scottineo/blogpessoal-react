@@ -107,6 +107,7 @@ function Cadastro() {
       alert(errorMessage);
     } finally {
       setIsLoading(false);
+      retornar("/home");
     }
   }
 
