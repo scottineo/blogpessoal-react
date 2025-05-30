@@ -1,6 +1,6 @@
 # Blog Pessoal
 
-Um espaço para compartilhar suas ideias, pensamentos e opiniões com o mundo. Este projeto é uma plataforma de blog moderna e responsiva, construída com tecnologias web de ponta.
+Um espaço para compartilhar suas ideias, pensamentos e opiniões com o mundo. Este projeto é uma plataforma de blog moderna e responsiva, construída com tecnologias web comuns no mercado.
 
 ## ✨ Funcionalidades
 
