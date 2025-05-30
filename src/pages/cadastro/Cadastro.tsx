@@ -12,7 +12,13 @@ function Cadastro() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [confirmaSenha, setConfirmaSenha] = useState<string>("");
 
-  const [usuario, setUsuario] = useState<Usuario>({} as Usuario);
+  const [usuario, setUsuario] = useState<Usuario>({
+    id: 0,
+    nome: "",
+    usuario: "",
+    senha: "",
+    foto: "",
+  });
 
   const [errors, setErrors] = useState<{
     nome?: string;
@@ -22,35 +28,52 @@ function Cadastro() {
   }>({});
 
   useEffect(() => {
-    if (usuario.id == undefined) {
-      retornar("/cadastro");
+    if (usuario.id !== 0 && usuario.id !== undefined) {
+      alert("Usuário cadastrado com sucesso! Redirecionando para o login.");
+      navigate("/login");
     }
-  }, [usuario]);
+  }, [usuario, navigate]);
 
-  function retornar(p0: string) {
+  function handleCancelar() {
     navigate("/");
   }
 
   function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
     setUsuario({
       ...usuario,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
-    if (errors[e.target.name]) {
+    if (errors[name as keyof typeof errors]) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        [e.target.name]: null,
+        [name]: undefined,
+      }));
+    }
+
+    if (name === "senha" && errors.confirmaSenha) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        confirmaSenha: undefined,
       }));
     }
   }
 
   function handleConfirmarSenha(e: ChangeEvent<HTMLInputElement>) {
     setConfirmaSenha(e.target.value);
+    if (errors.confirmaSenha) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        confirmaSenha: undefined,
+      }));
+    }
   }
+
   const validateForm = () => {
-    const newErrors: any = {};
-    if (!usuario.nome || !usuario.nome.trim())
+    const newErrors: typeof errors = {};
+    if (!usuario.nome || !usuario.nome.trim()) {
       newErrors.nome = "O nome é obrigatório.";
+    }
 
     if (!usuario.usuario || !usuario.usuario.trim()) {
       newErrors.usuario = "O e-mail é obrigatório.";
@@ -63,6 +86,7 @@ function Cadastro() {
     } else if (usuario.senha.length < 8) {
       newErrors.senha = "A senha deve ter no mínimo 8 caracteres.";
     }
+
     if (!confirmaSenha.trim()) {
       newErrors.confirmaSenha = "A confirmação de senha é obrigatória.";
     } else if (usuario.senha !== confirmaSenha) {
@@ -72,17 +96,18 @@ function Cadastro() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   async function cadastrarNovoUsuario(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsLoading(true);
 
     if (!validateForm()) {
-      setIsLoading(false);
+      setIsLoading(false); // Stop loading if validation fails
       return;
     }
+    setIsLoading(true);
+
     try {
       await cadastrarUsuario(`/usuarios/cadastrar`, usuario, setUsuario);
-      alert("Usuário cadastrado com sucesso!");
     } catch (error) {
       let errorMessage = "Erro ao cadastrar o usuário!";
       if (axios.isAxiosError(error)) {
@@ -107,7 +132,6 @@ function Cadastro() {
       alert(errorMessage);
     } finally {
       setIsLoading(false);
-      retornar("/login");
     }
   }
 
@@ -181,6 +205,8 @@ function Cadastro() {
               name="foto"
               placeholder="URL da sua foto"
               className="border-2 border-slate-700 rounded p-2"
+              value={usuario.foto}
+              onChange={atualizarEstado}
             />
           </div>
 
@@ -239,7 +265,7 @@ function Cadastro() {
               type="button"
               className="rounded text-white bg-red-400 
                 hover:bg-red-700 w-1/2 py-2"
-              onClick={() => retornar("/")}
+              onClick={handleCancelar}
             >
               Cancelar
             </button>
