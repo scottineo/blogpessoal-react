@@ -101,7 +101,7 @@ function Cadastro() {
     e.preventDefault();
 
     if (!validateForm()) {
-      setIsLoading(false); // Stop loading if validation fails
+      setIsLoading(false);
       return;
     }
     setIsLoading(true);

@@ -10,6 +10,7 @@ export const cadastrarUsuario = async (
   setDados: Function
 ) => {
   const resposta = await api.post(url, dados);
+  console.log(resposta);
   setDados(resposta.data);
 };
 
